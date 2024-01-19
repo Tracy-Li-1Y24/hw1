@@ -3,8 +3,8 @@
 -- The end product will be a report that prints the movies and the 
 -- top-billed cast for each movie in the database.
 
--- Requirements/assumptions
---
+--Requirements and user stories
+
 -- - There will only be three movies in the database – the three films
 --   that make up Christopher Nolan's Batman trilogy.
 -- - Movie data includes the movie title, year released, MPAA rating,
@@ -106,12 +106,94 @@
 -- Drop existing tables, so you'll start fresh each time this script is run.
 -- TODO!
 
+DROP TABLE IF EXISTS studios;
+DROP TABLE IF EXISTS movies;
+DROP TABLE IF EXISTS actors;
+DROP TABLE IF EXISTS characters;
+
 -- Create new tables, according to your domain model
 -- TODO!
+
+CREATE TABLE studios(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT
+);
+
+CREATE TABLE movies(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    year INTEGER,
+    mpaa_rating TEXT,
+    studio_id INTEGER
+);
+
+CREATE TABLE actors(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT
+);
+
+CREATE TABLE characters(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    actor_id INTEGER,
+    movie_id INTEGER
+);
 
 -- Insert data into your database that reflects the sample data shown above
 -- Use hard-coded foreign key IDs when necessary
 -- TODO!
+
+INSERT INTO studios (name) VALUES ("Warner Bros.");
+
+INSERT INTO movies (title, year, mpaa_rating, studio_id) 
+VALUES ("Batman Begins", 2005, "PG-13", 1);
+INSERT INTO movies (title, year, mpaa_rating, studio_id) 
+VALUES ("The Dark Knight", 2008, "PG-13", 1);
+INSERT INTO movies (title, year, mpaa_rating, studio_id) 
+VALUES ("The Dark Knight Rises", 2012, "PG-13", 1);
+
+INSERT INTO actors (name) VALUES ("Christian Bale");
+INSERT INTO actors (name) VALUES ("Michael Caine");
+INSERT INTO actors (name) VALUES ("Liam Neeson");
+INSERT INTO actors (name) VALUES ("Katie Holmes");
+INSERT INTO actors (name) VALUES ("Gary Oldman");
+INSERT INTO actors (name) VALUES ("Heath Ledger");
+INSERT INTO actors (name) VALUES ("Aaron Eckhart");
+INSERT INTO actors (name) VALUES ("Maggie Gyllenhaal");
+INSERT INTO actors (name) VALUES ("Tom Hardy");
+INSERT INTO actors (name) VALUES ("Joseph Gordon-Levitt");
+INSERT INTO actors (name) VALUES ("Anne Hathaway");
+
+INSERT INTO characters (name, actor_id, movie_id) 
+VALUES ("Bruce Wayne", 1, 1);
+INSERT INTO characters (name, actor_id, movie_id) 
+VALUES ("Alfred", 2, 1);
+INSERT INTO characters (name, actor_id, movie_id) 
+VALUES ("Ra's Al Ghul", 3, 1);
+INSERT INTO characters (name, actor_id, movie_id) 
+VALUES ("Rachel Dawes", 4, 1);
+INSERT INTO characters (name, actor_id, movie_id) 
+VALUES ("Commissioner Gordon", 5, 1);
+INSERT INTO characters (name, actor_id, movie_id) 
+VALUES ("Bruce Wayne", 1, 2);
+INSERT INTO characters (name, actor_id, movie_id) 
+VALUES ("Joker", 6, 2);
+INSERT INTO characters (name, actor_id, movie_id) 
+VALUES ("Harvey Dent", 7, 2);
+INSERT INTO characters (name, actor_id, movie_id) 
+VALUES ("Alfred", 2, 2);
+INSERT INTO characters (name, actor_id, movie_id) 
+VALUES ("Rachel Dawes", 8, 2);
+INSERT INTO characters (name, actor_id, movie_id) 
+VALUES ("Bruce Wayne", 1, 3);
+INSERT INTO characters (name, actor_id, movie_id) 
+VALUES ("Commissioner Gordon", 5, 3);
+INSERT INTO characters (name, actor_id, movie_id) 
+VALUES ("Bane", 9, 3);
+INSERT INTO characters (name, actor_id, movie_id) 
+VALUES ("John Blake", 10, 3);
+INSERT INTO characters (name, actor_id, movie_id) 
+VALUES ("Selina Kyle", 11, 3);
 
 -- Prints a header for the movies output
 .print "Movies"
@@ -120,6 +202,8 @@
 
 -- The SQL statement for the movies output
 -- TODO!
+SELECT movies.title, movies.year, movies.mpaa_rating, studios.name FROM movies
+INNER JOIN studios ON studios.id = movies.studio_id;
 
 -- Prints a header for the cast output
 .print ""
@@ -127,6 +211,8 @@
 .print "========"
 .print ""
 
-
 -- The SQL statement for the cast output
 -- TODO!
+SELECT movies.title, actors.name, characters.name FROM movies
+INNER JOIN actors ON movies.id = characters.movie_id
+INNER JOIN characters ON actors.id = characters.actor_id;
