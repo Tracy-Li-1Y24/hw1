@@ -216,3 +216,5 @@ INNER JOIN studios ON studios.id = movies.studio_id;
 SELECT movies.title, actors.name, characters.name FROM movies
 INNER JOIN actors ON movies.id = characters.movie_id
 INNER JOIN characters ON actors.id = characters.actor_id;
+
+-- Question: 1)how to add multiple rows more efficiently? 2) How to break down the N-N relationship between character and movie, and between charater and actor
